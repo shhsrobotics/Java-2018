@@ -26,7 +26,9 @@ public class AltLeft extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		System.out.println("Running AltLeft, GameData says: " + gameData);
     	if(gameData.length()>0) {
+    		System.out.println("GameData length good");
     		if(gameData.charAt(0) == 'R') {
     			if(gameData.charAt(1) == 'L') {
     				addParallel(new AutoLiftSwitch(850));

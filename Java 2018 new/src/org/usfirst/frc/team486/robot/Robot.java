@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	SendableChooser<String> m_chooser = new SendableChooser<>();
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -55,19 +55,25 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new DriveCommand());
+		/*m_chooser.addDefault("Default Auto", new DriveCommand());
 		m_chooser.addObject("AutoTest", new AutoTest());
 		m_chooser.addObject("Left", new Left());
 		m_chooser.addObject("Middle", new Middle());
 		m_chooser.addObject("Right", new Right());
 		m_chooser.addObject("AltLeft", new AltLeft());
 		m_chooser.addObject("ALtRight", new AltRight());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		*/
+		m_chooser.addDefault("Do Nothing", "Do Nothing");
+		m_chooser.addObject("AutoTest", "AutoTest");
+		m_chooser.addObject("Left", "Left");
+		m_chooser.addObject("Middle", "Middle");
+		m_chooser.addObject("Right", "Right");
+		SmartDashboard.putData("Auto Mode", m_chooser);
 		Robot.compressor.compressor_start();
 		Robot.chassis.encoders_reset();
 		Robot.arm.encoder_reset();
 		UsbCamera server = CameraServer.getInstance().startAutomaticCapture();
-		server.setResolution(640, 480);
+		server.setResolution(320, 240);
 		Robot.chassis.gyro_reset();
 	}
 
@@ -99,7 +105,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		String chosenAuto = m_chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -108,6 +114,20 @@ public class Robot extends TimedRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
+		switch(chosenAuto) {
+			case "Middle":
+				m_autonomousCommand = new Middle();
+				break;
+			case "Left":
+				m_autonomousCommand = new AltLeft();
+				break;
+			case "Right":
+				m_autonomousCommand = new AltRight();
+				break;
+			default:
+				break;
+		}
+		
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
@@ -122,6 +142,7 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Left_encoder", Robot.chassis.left_encoder_distance());
 		SmartDashboard.putNumber("Right_encoder", Robot.chassis.right_encoder_distance());
+		SmartDashboard.putNumber("Arm_encoder", Robot.arm.encoder_distance());
 		SmartDashboard.putNumber("Gyro", Robot.chassis.gyro_angle());
 	}
 
@@ -143,10 +164,10 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		Robot.arm.encoder_dashboard();
-		SmartDashboard.putNumber("Left_encoder", Robot.chassis.left_encoder_distance());
+		/*/SmartDashboard.putNumber("Left_encoder", Robot.chassis.left_encoder_distance());
 		SmartDashboard.putNumber("Right_encoder", Robot.chassis.right_encoder_distance());
 		SmartDashboard.putNumber("Arm_encoder", Robot.arm.encoder_distance());
-		SmartDashboard.putNumber("Gyro", Robot.chassis.gyro_angle());
+		SmartDashboard.putNumber("Gyro", Robot.chassis.gyro_angle());/*/
 		
 	}
 

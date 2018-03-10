@@ -23,10 +23,10 @@ public class CompressorSubsystem extends Subsystem {
 	}
 	//Grab
 	public void grab_open() {
-		this.grab.set(false);
+		this.grab.set(true);
 	}
 	public void grab_close() {
-		this.grab.set(true);
+		this.grab.set(false);
 	}
 	//Arm
 	public void arm_extend() {

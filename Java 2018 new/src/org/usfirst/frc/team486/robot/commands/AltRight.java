@@ -26,9 +26,13 @@ public class AltRight extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		System.out.println("Running AltRight, GameData says: " + gameData);
     	if(gameData.length()>0) {
+    		System.out.println("GameData length good");
     		if(gameData.charAt(0) == 'L') {
+        	//System.out.println("Wrong side! Not switch");
     			if(gameData.charAt(1) == 'R') {
+            		//System.out.println("Doing scale instead");
     				addParallel(new AutoLiftSwitch(850));
         			addParallel(new GrabTimer(9.75));
         			addSequential(new AutoDriveDistance(309, 0.7));
@@ -36,11 +40,13 @@ public class AltRight extends CommandGroup {
         			addSequential(new AutoDriveDistance(36, 0.5));
     			}
     			else {
+            		//System.out.println("Drive forward");
                 	addParallel(new AutoLiftSwitch(400));
                 	addSequential(new AutoDriveDistance(101, 0.6));
     			}
         	}
         	else {
+        		//System.out.println("Placing in switch");
         		addParallel(new GrabTimer(7));
             	addParallel(new AutoLiftSwitch(450));
             	addSequential(new AutoDriveDistance(140, 0.6));
